@@ -3,10 +3,12 @@ import { useSelector } from "react-redux";
 export default function CartItem() {
   const items = useSelector((state) => state.cart.items);
 
-  const total = items.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
+  const calculateTotal = () => {
+    return items.reduce(
+      (sum, item) => sum + item.price * item.quantity,
+      0
+    );
+  };
 
   return (
     <div>
@@ -18,13 +20,13 @@ export default function CartItem() {
         items.map((item) => (
           <div key={item.id}>
             <h3>{item.name}</h3>
-            <p>Price: ${item.price}</p>
-            <p>Quantity: {item.quantity}</p>
+            <p>${item.price}</p>
+            <p>Qty: {item.quantity}</p>
           </div>
         ))
       )}
 
-      <h3>Total Cart Amount: ${total}</h3>
+      <h3>Total Cart Amount: ${calculateTotal()}</h3>
     </div>
   );
 }

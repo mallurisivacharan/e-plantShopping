@@ -1,36 +1,51 @@
 import { useDispatch } from "react-redux";
 import { addItem } from "../redux/CartSlice";
+import { useState } from "react";
 
 export default function ProductList() {
   const dispatch = useDispatch();
+  const [addedItems, setAddedItems] = useState([]);
 
-  const plants = [
-    { id: 1, name: "Rose", price: 10, category: "Flower" },
-    { id: 2, name: "Tulip", price: 12, category: "Flower" },
-    { id: 3, name: "Cactus", price: 15, category: "Desert" },
-    { id: 4, name: "Aloe Vera", price: 20, category: "Medicinal" },
-    { id: 5, name: "Bonsai", price: 25, category: "Decorative" },
-    { id: 6, name: "Snake Plant", price: 18, category: "Indoor" }
-  ];
+  const plants = {
+    Flowers: [
+      { id: 1, name: "Rose", price: 10 },
+      { id: 2, name: "Tulip", price: 12 }
+    ],
+    Desert: [
+      { id: 3, name: "Cactus", price: 15 }
+    ],
+    Indoor: [
+      { id: 4, name: "Aloe Vera", price: 20 },
+      { id: 5, name: "Snake Plant", price: 18 }
+    ]
+  };
+
+  const handleAdd = (plant) => {
+    dispatch(addItem(plant));
+    setAddedItems([...addedItems, plant.id]);
+  };
 
   return (
     <div>
       <h2>Plants</h2>
 
-      {plants.map((p) => (
-        <div key={p.id}>
-          <img
-            src="https://via.placeholder.com/100"
-            alt={p.name}
-          />
+      {Object.keys(plants).map((category) => (
+        <div key={category}>
+          <h3>{category}</h3>
 
-          <h3>{p.name}</h3>
-          <p>Category: {p.category}</p>
-          <p>Price: ${p.price}</p>
+          {plants[category].map((p) => (
+            <div key={p.id}>
+              <h4>{p.name}</h4>
+              <p>${p.price}</p>
 
-          <button onClick={() => dispatch(addItem(p))}>
-            Add to Cart
-          </button>
+              <button
+                disabled={addedItems.includes(p.id)}
+                onClick={() => handleAdd(p)}
+              >
+                {addedItems.includes(p.id) ? "Added" : "Add to Cart"}
+              </button>
+            </div>
+          ))}
         </div>
       ))}
     </div>
