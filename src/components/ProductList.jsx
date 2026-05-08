@@ -1,51 +1,51 @@
 import { useDispatch } from "react-redux";
 import { addItem } from "../redux/CartSlice";
-import { useState } from "react";
 
 export default function ProductList() {
   const dispatch = useDispatch();
-  const [addedItems, setAddedItems] = useState([]);
 
-  const plants = {
-    Flowers: [
-      { id: 1, name: "Rose", price: 10 },
-      { id: 2, name: "Tulip", price: 12 }
-    ],
-    Desert: [
-      { id: 3, name: "Cactus", price: 15 }
-    ],
-    Indoor: [
-      { id: 4, name: "Aloe Vera", price: 20 },
-      { id: 5, name: "Snake Plant", price: 18 }
-    ]
-  };
+  const plantsArray = [
+    { id: 1, name: "Rose", price: 10, category: "Flowers", img: "https://via.placeholder.com/100" },
+    { id: 2, name: "Tulip", price: 12, category: "Flowers", img: "https://via.placeholder.com/100" },
+    { id: 3, name: "Sunflower", price: 14, category: "Flowers", img: "https://via.placeholder.com/100" },
 
-  const handleAdd = (plant) => {
-    dispatch(addItem(plant));
-    setAddedItems([...addedItems, plant.id]);
-  };
+    { id: 4, name: "Cactus", price: 15, category: "Desert", img: "https://via.placeholder.com/100" },
+    { id: 5, name: "Aloe Vera", price: 18, category: "Medicinal", img: "https://via.placeholder.com/100" },
+    { id: 6, name: "Bonsai", price: 25, category: "Indoor", img: "https://via.placeholder.com/100" }
+  ];
+
+  const categories = ["Flowers", "Desert", "Medicinal", "Indoor"];
 
   return (
     <div>
-      <h2>Plants</h2>
 
-      {Object.keys(plants).map((category) => (
-        <div key={category}>
-          <h3>{category}</h3>
+      {/* NAVBAR (required) */}
+      <nav>
+        <a href="/">Home</a> |{" "}
+        <a href="/plants">Plants</a> |{" "}
+        <a href="/cart">Cart</a>
+      </nav>
 
-          {plants[category].map((p) => (
-            <div key={p.id}>
-              <h4>{p.name}</h4>
-              <p>${p.price}</p>
+      <h2>Plants List</h2>
 
-              <button
-                disabled={addedItems.includes(p.id)}
-                onClick={() => handleAdd(p)}
-              >
-                {addedItems.includes(p.id) ? "Added" : "Add to Cart"}
-              </button>
-            </div>
-          ))}
+      {categories.map((cat) => (
+        <div key={cat}>
+          <h3>{cat}</h3>
+
+          {plantsArray
+            .filter((p) => p.category === cat)
+            .map((plant) => (
+              <div key={plant.id}>
+                <img src={plant.img} alt={plant.name} width="80" />
+
+                <h4>{plant.name}</h4>
+                <p>${plant.price}</p>
+
+                <button onClick={() => dispatch(addItem(plant))}>
+                  Add to Cart
+                </button>
+              </div>
+            ))}
         </div>
       ))}
     </div>
