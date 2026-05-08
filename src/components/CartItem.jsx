@@ -9,25 +9,22 @@ export default function CartItem() {
   );
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>🛒 Cart Page</h2>
+    <div>
+      <h2>Shopping Cart</h2>
 
       {items.length === 0 ? (
         <p>Cart is empty</p>
       ) : (
         items.map((item) => (
-          <div key={item.id} style={{ marginBottom: "10px" }}>
+          <div key={item.id}>
             <h3>{item.name}</h3>
             <p>Price: ${item.price}</p>
             <p>Quantity: {item.quantity}</p>
-            <p>Subtotal: ${item.price * item.quantity}</p>
           </div>
         ))
       )}
 
-      <hr />
-
-      <h3>Total: ${total}</h3>
+      <h3>Total Cart Amount: ${total}</h3>
     </div>
   );
 }
